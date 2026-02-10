@@ -1,60 +1,63 @@
-// 🔔 Push bildirimi geldiğinde tetiklenen event
 self.addEventListener("push", (event) => {
-
-  // Server'dan gelen verileri tutmak için boş obje
   let data = {};
 
-  // Eğer push event'i veri içeriyorsa
-  if (event.data) {
-
-    // Gelen veriyi JSON formatına çeviriyoruz
-    // (Server payload JSON olmalı)
-    data = event.data.json();
+  try {
+    if (event.data) {
+      data = event.data.json();
+    }
+  } catch (err) {
+    console.error("Push data parse error:", err);
   }
 
-  // Bildirim başlığı
-  // Server'dan title gelmezse varsayılan başlık kullanılır
-  const title = data.title || "Varsayılan Başlık";
+  const title = data.title || "Yeni Bildirim 🚀";
 
-  // Bildirim ayarları (options)
   const options = {
-
-    // Bildirim açıklama metni
-    body: data.body || "",
-
-    // Bildirim ana ikonu
+    body: data.body || "Detayları görmek için tıklayın",
     icon: data.icon || "/images/logo.png",
-
-    // Mobil ve bazı tarayıcılarda görünen küçük ikon
     badge: data.badge || "/images/badge.png",
 
-    // Mobil cihazlarda titreşim ayarı
+    // Büyük görsel (Chrome / Edge destekler)
+    image: data.image || undefined,
+
+    // Aynı bildirimi tekrar gönderirken eskisini ezmek için
+    tag: data.tag || "default-notification",
+
+    // Aynı tag ile yeni bildirim gelirse titreşim vs tekrar etsin mi
+    renotify: data.renotify ?? true,
+
+    // Mobil titreşim
     vibrate: data.vibrate || [100, 50, 100],
 
-    // Bildirim kullanıcı etkileşimi olana kadar ekranda kalır
-    // null veya undefined ise true kabul edilir
-    requireInteraction: data.requireInteraction ?? true,
+    // Kullanıcı etkileşimi beklesin mi
+    requireInteraction: data.requireInteraction ?? false,
 
-    // Bildirimle birlikte taşınan özel data
+    // Sessiz bildirim desteği
+    silent: data.silent ?? false,
+
+    // Tıklama sonrası kullanılacak özel data
     data: {
-      // Bildirime tıklanınca açılacak URL
       url: data.url || "/",
-
-      // Bildirimin alındığı zaman (timestamp)
-      dateOfArrival: Date.now()
+      notificationId: data.id || null,
+      dateOfArrival: Date.now(),
     },
 
-    // Bildirim üzerindeki action butonları
-    actions: data.actions || []
+    // Action butonları
+    actions: data.actions || [
+      {
+        action: "open",
+        title: "Görüntüle 👀"
+      },
+      {
+        action: "close",
+        title: "Kapat ❌"
+      }
+    ]
   };
 
-  // Bildirimi ekranda göster
-  // waitUntil => Service Worker işlemi bitene kadar aktif kalır
   event.waitUntil(
     self.registration.showNotification(title, options)
   );
 });
-
 
 // 🖱️ Bildirime tıklandığında tetiklenen event
 self.addEventListener("notificationclick", (event) => {

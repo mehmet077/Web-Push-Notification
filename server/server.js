@@ -23,7 +23,6 @@ webPush.setVapidDetails(
   vapidKeys.privateKey
 );
 
-
 // 🧩 CHROME abonelik bilgisi
 // Bu bilgiler tarayıcıdan alınır (PushManager.subscribe())
 const subscriberChrome = {
