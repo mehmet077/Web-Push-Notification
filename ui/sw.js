@@ -1,18 +1,23 @@
+// 🔔 Push bildirimi geldiğinde tetiklenen event
 self.addEventListener("push", (event) => {
+
+  // Server'dan gelen verileri tutmak için boş obje
   let data = {};
 
-  try {
-    if (event.data) {
-      data = event.data.json();
-    }
-  } catch (err) {
-    console.error("Push data parse error:", err);
+  // Eğer push event'i veri içeriyorsa
+  if (event.data) {
+
+    // Gelen veriyi JSON formatına çeviriyoruz
+    // (Server payload JSON olmalı)
+    data = event.data.json();
   }
 
-  const title = data.title || "Yeni Bildirim 🚀";
+  // Bildirim başlığı
+  // Server'dan title gelmezse varsayılan başlık kullanılır
+  const title = data.title || "Varsayılan Başlık";
 
   const options = {
-    body: data.body + (data.data?.vibrate ? ` - Vibrate: ${data.data.vibrate}` : "") || "Detayları görmek için tıklayın",
+    body: data.body +"12333"+ (data.data?.vibrate ? ` - Vibrate: ${data.data.vibrate}` : "") || "Detayları görmek için tıklayın",
     icon: data.icon || "/images/logo.png",
     badge: data.badge || "/images/badge.png",
 
@@ -54,10 +59,13 @@ self.addEventListener("push", (event) => {
     ]
   };
 
+  // Bildirimi ekranda göster
+  // waitUntil => Service Worker işlemi bitene kadar aktif kalır
   event.waitUntil(
     self.registration.showNotification(title, options)
   );
 });
+
 
 // 🖱️ Bildirime tıklandığında tetiklenen event
 self.addEventListener("notificationclick", (event) => {
