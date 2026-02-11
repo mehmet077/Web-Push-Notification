@@ -59,9 +59,9 @@ Private Key
 üretecektir.
 
 3️⃣ Çevresel Değişkenleri Yapılandırın (.env)
-```json
 Proje kök dizinine bir .env dosyası oluşturun:
 
+```json
 VAPID_SUBJECT=mailto:admin@domain.com
 
 VAPID_PUBLIC_KEY=ÜRETTİĞİNİZ_PUBLIC_KEY
