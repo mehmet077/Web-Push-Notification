@@ -1,6 +1,3 @@
-Tamam 👍 LinkedIn ile ilgili tüm öneri ve referansları kaldırdım.
-Aşağıda temizlenmiş ve tamamen genel amaçlı README.md içeriği var:
-
 # 🚀 Node.js Web Push (VAPID) Notification Server
 
 Bu proje, **Node.js** ve **Express** kullanarak tarayıcılara yüksek kaliteli, büyük görselli (Hero Image) bildirimler gönderen modern bir sunucu örneğidir.
